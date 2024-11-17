@@ -61,10 +61,11 @@ const TaskListManagement = () => {
         {
             title: 'Created ',
             dataKey: 'created_at',
-            row: (data: tastDataType) => (
+            row: () => (
                 <div>
                     <p className="line-clamp-2 text-black">
-                        {new Date(data?.created_at).toLocaleString()}
+                        10-10-10
+                        {/* {data?.created_at.toLocaleString()} */}
                     </p>
                 </div>
             ),
@@ -97,10 +98,9 @@ const TaskListManagement = () => {
                 My Tasks
             </Typography>
             <div>
-                <li>Show the Data</li>
-                <li>make table with edit delete component</li>
+                <li>delete component</li>
                 <li>Task Crud Operation</li>
-                <li>Form and Validation using React Hook Form, ZOD</li>
+                <li>Validation ZOD</li>
                 <li>Api Call using Zustand</li>
                 <li>Filtering using status, Priority , limit , pagination , </li>
                 <li>Tab Open,Progress,Cosed</li>

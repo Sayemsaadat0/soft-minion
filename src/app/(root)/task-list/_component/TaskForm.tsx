@@ -3,24 +3,14 @@ import { tastDataType } from '@/model/task.type';
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import Slide from '@mui/material/Slide';
-import { TransitionProps } from '@mui/material/transitions';
-import { Typography } from '@mui/material';
+
+import { Button, Typography } from '@mui/material';
+import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
+import { MuiModalTransition } from '@/components/core/MuiModalTransition';
 
 
-
-const Transition = React.forwardRef(function Transition(
-    props: TransitionProps & {
-        children: React.ReactElement<any, any>;
-    },
-    ref: React.Ref<unknown>,
-) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
 
 
 
@@ -30,7 +20,6 @@ type TaskFormType = {
     instance?: tastDataType;
     handleDataSubmit: Function;
 };
-
 
 
 const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
@@ -43,7 +32,7 @@ const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
     const handleClose = () => {
         setOpen(false);
     };
-
+    console.log(instance)
     const {
         register,
         reset,
@@ -57,7 +46,6 @@ const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
             created_at: instance?.created_at || new Date(),
         },
     });
-
     const onSubmit: SubmitHandler<tastDataType> = async (data) => {
         try {
             let form_data = new FormData();
@@ -65,11 +53,13 @@ const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
             form_data.append('priority', data.priority);
             form_data.append('status', data.status);
             form_data.append('created_at', data.created_at ? data.created_at.toISOString() : '');
+   
             if (instance) {
-                await handleDataSubmit(form_data);
-                reset()
-                setOpen(false)
                 console.log('Edited Data Successfull')
+                // await handleDataSubmit(form_data);
+                // reset()
+                // setOpen(false)
+             
             } else {
                 await handleDataSubmit(data)
                 reset()
@@ -85,11 +75,14 @@ const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
     return (
         <React.Fragment>
             <div className='cursor-pointer' onClick={handleClickOpen}>
-                Add Task
+                {
+                    instance ? <div className='bg-success_1/40  p-0.5 '> <EditNoteOutlinedIcon /> </div> : <div> Create New Task</div>
+                }
+
             </div>
             <Dialog
                 open={open}
-                TransitionComponent={Transition}
+                TransitionComponent={MuiModalTransition}
                 keepMounted
                 onClose={handleClose}
                 aria-describedby="alert-dialog-slide-description"
@@ -129,10 +122,10 @@ const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
                                 <p role="alert">First name is required</p>
                             )}
                         </div>
-                        <div className="border-t dark:border-t-oc-black-200 py-5 mt-10">
-                            <button disabled={isSubmitting} className='disabled:bg-black' type='submit'>
+                        <div className="flex justify-end">
+                            <Button type='submit' disabled={isSubmitting} color="success" variant="contained">
                                 {isSubmitting ? 'Submitting' : 'Submit'}
-                            </button>
+                            </Button>
                         </div>
                     </form>
                 </DialogContent>

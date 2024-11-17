@@ -1,4 +1,4 @@
-import { tastDataType } from '@/model/task.type';
+
 import Task from '@/schema/Task';
 import { NextResponse } from "next/server";
 import "@/DB/db"
@@ -8,14 +8,10 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const _id = searchParams.get("_id");
-
-    const sort = searchParams.get("sort") || "desc";  // Default to "asc" if no sort parameter is provided
-
-    // Determine the sort direction (1 for asc, -1 for desc)
+    const sort = searchParams.get("sort") || "desc";
     const sortDirection = sort === "desc" ? -1 : 1;
 
     if (_id) {
-      // Fetch a single task by _id
       const result = await Task.findById(_id);
 
       if (result) {
@@ -76,3 +72,4 @@ export async function POST(request: Request) {
     );
   }
 }
+

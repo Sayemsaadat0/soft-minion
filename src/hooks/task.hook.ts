@@ -37,3 +37,38 @@ export const useCreateTask = () => {
         },
     });
 };
+
+
+
+
+export const useUpdateTask = (_id: string) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (body: any) =>
+            await axiousResuest({
+                url: `/task/${_id}`,
+                method: 'patch',
+                data: body,
+
+            }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['task_list'] });
+        },
+    });
+};
+
+export const useDeleteTask = (_id: string) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (body: any) =>
+            await axiousResuest({
+                url: `/task/${_id}`,
+                method: 'delete',
+                data: body,
+
+            }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['task_list'] });
+        },
+    });
+};

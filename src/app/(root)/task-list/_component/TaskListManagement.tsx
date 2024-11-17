@@ -5,8 +5,9 @@ import { Typography } from '@mui/material';
 import Link from 'next/link';
 import { FC } from 'react';
 import TaskForm from './TaskForm';
-import { useCreateTask, useGetTaskData } from '@/hooks/task.hook';
+import { useCreateTask, useDeleteTask, useGetTaskData, useUpdateTask } from '@/hooks/task.hook';
 import { formatDatetamp, formatTimeStamp } from '@/libs/formatTimeStams';
+import DeleteAction from '@/components/core/action/DeleteAction';
 
 
 
@@ -83,13 +84,25 @@ const TaskListManagement = () => {
     type tableActionType = {
         data: tastDataType;
     };
-    const CandidateTableAction: FC<tableActionType> = ({ data }) => (
-        <div>
-            <div className="">
-                <TaskForm instance={data} handleDataSubmit={() => undefined} />
-            </div>
+    const CandidateTableAction: FC<tableActionType> = ({ data }) => {
+        const { mutateAsync } = useUpdateTask(String(data?._id || ""));
+        const { mutateAsync: handleDelte } = useDeleteTask(String(data?._id || ""));
+        return <div className="flex gap-1">
+            <TaskForm instance={data} handleDataSubmit={mutateAsync} />
+            <DeleteAction handleDeleteSubmit={handleDelte} />
         </div>
-    );
+    }
+
+
+    // const CandidateTableAction: FC<tableActionType> = ({ data }) => {
+    //     const { mutate } = useUpdateTask(data?._id)
+    //         ( return <div>
+    //             <div className="flex gap-1">
+    //                 <TaskForm instance={data} handleDataSubmit={() => undefined} />
+    //                 <DeleteAction handleDeleteSubmit={() => undefined} />
+    //             </div>
+    //         </div>
+    // )};
 
 
 

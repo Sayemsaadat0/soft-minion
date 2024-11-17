@@ -31,7 +31,6 @@ const DeleteAction: React.FC<DeleteActionProps> = ({
 
     const handleDelete = useCallback(async () => {
         try {
-            // console.log('The Button is clicked for', id)
             await handleDeleteSubmit()
             // setOpen(false);
         } catch (error) {

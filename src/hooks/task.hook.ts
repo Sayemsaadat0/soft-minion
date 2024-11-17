@@ -1,3 +1,4 @@
+"use client"
 import axiousResuest from "@/libs/axiousRequest";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -41,14 +42,14 @@ export const useCreateTask = () => {
 
 
 
-export const useUpdateTask = (_id: string) => {
+export const useUpdateTask = (id: string) => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (body: any) =>
             await axiousResuest({
-                url: `/task/${_id}`,
+                url: `/task/${id}`,
                 method: 'patch',
-                data: body,
+                data: JSON.stringify(body),
 
             }),
         onSuccess: () => {
@@ -57,16 +58,17 @@ export const useUpdateTask = (_id: string) => {
     });
 };
 
-export const useDeleteTask = (_id: string) => {
+export const useDeleteTask = (id: string) => {
+    console.log("ID passed to hook:", id);
     const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: async (body: any) =>
-            await axiousResuest({
-                url: `/task/${_id}`,
-                method: 'delete',
-                data: body,
 
-            }),
+    return useMutation({
+        mutationFn: async () => {
+            return await axiousResuest({
+                url: `/task/${id}`,
+                method: 'delete',
+            });
+        },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['task_list'] });
         },

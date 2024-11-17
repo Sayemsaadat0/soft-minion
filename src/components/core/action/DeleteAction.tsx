@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import { MuiModalTransition } from '../MuiModalTransition'
@@ -9,11 +9,13 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 type DeleteActionProps = {
     handleDeleteSubmit: Function;
     isLoading?: boolean;
+    id?: string
 };
 
 const DeleteAction: React.FC<DeleteActionProps> = ({
     handleDeleteSubmit,
     isLoading,
+    id
 }) => {
 
     const [open, setOpen] = React.useState(false);
@@ -29,10 +31,11 @@ const DeleteAction: React.FC<DeleteActionProps> = ({
 
     const handleDelete = useCallback(async () => {
         try {
+            // console.log('The Button is clicked for', id)
             await handleDeleteSubmit()
-            setOpen(false);
+            // setOpen(false);
         } catch (error) {
-
+            console.log(error)
         }
     }, [handleDeleteSubmit])
 
@@ -53,6 +56,7 @@ const DeleteAction: React.FC<DeleteActionProps> = ({
                         <DeleteOutlineOutlinedIcon style={{ fontSize: '120px' }} />
                     </div>
                     <div className='text-center text-2xl leading-6'>
+                        {id}
                         Are You sure? <br />
                         <span className='font-normal text-base'>This Action Cant be undone</span>
                     </div>

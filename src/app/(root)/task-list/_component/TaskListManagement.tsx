@@ -85,24 +85,13 @@ const TaskListManagement = () => {
         data: tastDataType;
     };
     const CandidateTableAction: FC<tableActionType> = ({ data }) => {
-        const { mutateAsync } = useUpdateTask(String(data?._id || ""));
-        const { mutateAsync: handleDelte } = useDeleteTask(String(data?._id || ""));
+        const { mutateAsync } = useUpdateTask(data?._id?.toString() || "");
+        const { mutateAsync: handleDelte } = useDeleteTask(data?._id?.toString() || "");
         return <div className="flex gap-1">
             <TaskForm instance={data} handleDataSubmit={mutateAsync} />
-            <DeleteAction handleDeleteSubmit={handleDelte} />
+            <DeleteAction  handleDeleteSubmit={handleDelte} />
         </div>
     }
-
-
-    // const CandidateTableAction: FC<tableActionType> = ({ data }) => {
-    //     const { mutate } = useUpdateTask(data?._id)
-    //         ( return <div>
-    //             <div className="flex gap-1">
-    //                 <TaskForm instance={data} handleDataSubmit={() => undefined} />
-    //                 <DeleteAction handleDeleteSubmit={() => undefined} />
-    //             </div>
-    //         </div>
-    // )};
 
 
 
@@ -116,10 +105,8 @@ const TaskListManagement = () => {
                 My Tasks
             </Typography>
             <div>
-                <li>delete component</li>
-                <li>Task Crud Operation</li>
                 <li>Validation ZOD</li>
-                <li>Api Call using Zustand</li>
+                {/* <li>Api Call using Zustand </li> */}
                 <li>Filtering using status, Priority , limit , pagination , </li>
                 <li>Tab Open,Progress,Cosed</li>
                 <li>Show Statistics Via Chart</li>

@@ -48,28 +48,30 @@ const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
     });
     const onSubmit: SubmitHandler<tastDataType> = async (data) => {
         try {
-            let form_data = new FormData();
-            form_data.append('task_name', data.task_name);
-            form_data.append('priority', data.priority);
-            form_data.append('status', data.status);
-            form_data.append('created_at', data.created_at ? data.created_at.toISOString() : '');
-   
-            if (instance) {
-                console.log('Edited Data Successfull')
-                // await handleDataSubmit(form_data);
-                // reset()
-                // setOpen(false)
-             
-            } else {
-                await handleDataSubmit(data)
-                reset()
-                setOpen(false)
-                console.log('Data Successfully Addedd')
-            }
+          const formData = {
+            task_name: data.task_name,
+            priority: data.priority,
+            status: data.status,
+            created_at: data.created_at ? data.created_at.toISOString() : ''
+          };
+      
+          if (instance) {
+            console.log('Editing Task');
+            await handleDataSubmit(formData); // Pass JSON instead of FormData
+            reset();
+            setOpen(false);
+            console.log('Task updated successfully');
+          } else {
+            await handleDataSubmit(formData); // New task submission
+            reset();
+            setOpen(false);
+            console.log('Task created successfully');
+          }
         } catch (err: any) {
-            console.log(err)
+          console.log(err);
         }
-    };
+      };
+      
 
 
     return (

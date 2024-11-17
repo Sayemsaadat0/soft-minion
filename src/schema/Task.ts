@@ -1,5 +1,6 @@
-import { tastDataType } from "@/model/task.type";
+
 import { model, models, Schema } from "mongoose";
+import { tastDataType } from "../model/task.type";
 
 const taskSchema = new Schema<tastDataType>(
     {

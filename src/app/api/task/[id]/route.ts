@@ -1,12 +1,13 @@
-import Task from '@/schema/Task';
+import "@/DB/db";
+import Task from "../../../../schema/Task";
 import { NextResponse } from "next/server";
-import "@/DB/db"
 
-
-
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+// PATCH request to update a task
+export async function PATCH(request: Request, { params }: { params: any }) {
   try {
-    const { id } = params;
+    // Await params if it's a Promise
+    const resolvedParams = await params; 
+    const { id } = resolvedParams;
     const updates = await request.json();
 
     if (!id) {
@@ -29,10 +30,12 @@ export async function PATCH(request: Request, { params }: { params: { id: string
   }
 }
 
-
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+// DELETE request to delete a task
+export async function DELETE(request: Request, { params }: { params: any }) {
   try {
-    const { id } = params;
+    // Await params if it's a Promise
+    const resolvedParams = await params;
+    const { id } = resolvedParams;
 
     if (!id) {
       return NextResponse.json({ success: false, message: 'No ID provided' }, { status: 400 });

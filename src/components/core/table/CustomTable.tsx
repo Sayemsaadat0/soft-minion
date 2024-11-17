@@ -17,13 +17,13 @@ const CustomTable: FC<CustomTableProps> = ({ columns, data, isLoading }) => {
     <div className="overflow-x-auto customScrollbar1 max-w-full border rounded-[10px] overflow-hidden">
       <div className="w-full">
         <table className="w-full text-left">
-          <thead>
+          <thead className='bg-primary_color/50 border'>
             <tr className='border-b'>
               {columns.map((column, index) => (
                 <th
                   key={index}
                   scope="col"
-                  className="p-3 tableAction"
+                  className="p-2 tableAction"
                 >
                   {column.title}
                 </th>

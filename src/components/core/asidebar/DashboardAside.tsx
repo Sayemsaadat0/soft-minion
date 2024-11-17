@@ -31,7 +31,7 @@ const DashboardAside: FC = () => {
     ];
 
     return (
-        <div className="p-5  max-w-[280px]  flex flex-col justify-between">
+        <div className="p-5  max-w-[280px] bg-secondary_color min-h-screen flex flex-col justify-between">
             <div className="space-y-20">
                 <div className="flex items-center gap-3">
                     <Typography sx={{ fontWeight: 600 }} variant='h4'>

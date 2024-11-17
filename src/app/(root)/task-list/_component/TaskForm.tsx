@@ -78,7 +78,7 @@ const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
         <React.Fragment>
             <div className='cursor-pointer' onClick={handleClickOpen}>
                 {
-                    instance ? <div className='bg-success_1/40  p-0.5 '> <EditNoteOutlinedIcon /> </div> : <div> Create New Task</div>
+                    instance ? <div className='bg-success_1/40  p-0.5 '> <EditNoteOutlinedIcon /> </div> : <div className='border p-2 text-sm md:text-base lg:py-3 lg:px-4 rounded-[10px] bg-primary_color hover:bg-warning_1 transition-all '> Create New Task</div>
                 }
 
             </div>

@@ -8,8 +8,20 @@ import TaskForm from './TaskForm';
 import { useCreateTask, useDeleteTask, useGetTaskData, useUpdateTask } from '@/hooks/task.hook';
 import { formatDatetamp, formatTimeStamp } from '@/libs/formatTimeStams';
 import DeleteAction from '@/components/core/action/DeleteAction';
+import TaskCard from './TaskCard';
 
 
+type tableActionType = {
+    data: tastDataType;
+};
+export const CandidateAction: FC<tableActionType> = ({ data }) => {
+    const { mutateAsync } = useUpdateTask(data?._id?.toString() || "");
+    const { mutateAsync: handleDelte } = useDeleteTask(data?._id?.toString() || "");
+    return <div className="flex gap-1">
+        <TaskForm instance={data} handleDataSubmit={mutateAsync} />
+        <DeleteAction handleDeleteSubmit={handleDelte} />
+    </div>
+}
 
 
 
@@ -27,7 +39,7 @@ const TaskListManagement = () => {
             dataKey: 'task_name',
             row: (data: tastDataType) => (
                 <div>
-                    <p className="line-clamp-2  text-black">
+                    <p className="line-clamp-2 min-w-[200px] text-black">
                         {data.task_name}
                     </p>
                 </div>
@@ -38,7 +50,7 @@ const TaskListManagement = () => {
             title: 'Priority',
             dataKey: 'priority',
             row: (data: tastDataType) => (
-                <div className="space-y-2">
+                <div className="space-y-2 min-w-[200px]">
                     <div
                         className={`w-fit text-center ${data?.priority === 'high' && 'bg-error_1/80 '} ${data?.priority === 'medium' && 'bg-warning_1 '} ${data?.priority === 'low' && ' bg-success_1 '}  min-w-[100px]`}
                     >
@@ -51,7 +63,7 @@ const TaskListManagement = () => {
             title: 'Status',
             dataKey: 'status',
             row: (data: tastDataType) => (
-                <div className="space-y-2">
+                <div className="space-y-2 min-w-[200px]">
                     <div
                         className={`w-fit text-center ${data?.status === 'pending' && 'bg-orange-300'} ${data?.status === 'completed' && ' bg-primary_color '}  min-w-[100px]`}
                     >
@@ -64,7 +76,7 @@ const TaskListManagement = () => {
             title: 'Created ',
             dataKey: 'created_at',
             row: (data: tastDataType) => (
-                <div className='text-black tet-sm flex gap-2'>
+                <div className='text-black tet-sm flex gap-2 min-w-[200px]'>
                     <p>{formatDatetamp(data?.createdAt || data?.createdAt)}</p>
                     <p> {formatTimeStamp(data?.createdAt || data?.createdAt)}</p>
                 </div>
@@ -75,23 +87,12 @@ const TaskListManagement = () => {
             dataKey: 'action',
             row: (data: tastDataType) => (
                 <div>
-                    <CandidateTableAction data={data} />
+                    <CandidateAction data={data} />
                 </div>
             ),
         },
     ];
 
-    type tableActionType = {
-        data: tastDataType;
-    };
-    const CandidateTableAction: FC<tableActionType> = ({ data }) => {
-        const { mutateAsync } = useUpdateTask(data?._id?.toString() || "");
-        const { mutateAsync: handleDelte } = useDeleteTask(data?._id?.toString() || "");
-        return <div className="flex gap-1">
-            <TaskForm instance={data} handleDataSubmit={mutateAsync} />
-            <DeleteAction  handleDeleteSubmit={handleDelte} />
-        </div>
-    }
 
 
 
@@ -100,31 +101,30 @@ const TaskListManagement = () => {
     const { mutateAsync } = useCreateTask()
     return (
         <div className='space-y-5'>
-            <TaskForm handleDataSubmit={mutateAsync} />
-            <Typography variant="h5" >
-                My Tasks
-            </Typography>
-            <div>
-                <li>Validation ZOD</li>
-                {/* <li>Api Call using Zustand </li> */}
-                <li>Filtering using status, Priority , limit , pagination , </li>
-                <li>Tab Open,Progress,Cosed</li>
-                <li>Show Statistics Via Chart</li>
-                <li>
-                    Resourses 1 :  {" "}
-                    <Link href={'https://www.youtube.com/watch?v=cc_xmawJ8Kg'} target='_blank'>Hook form And Zod</Link>
-                </li>
-                <li>
-                    Resourses 3 :  {" "}
-                    <Link href={'https://github.com/react-hook-form/resolvers#zod'} target='_blank'>Hook form And Zod Documentation</Link>
-                </li>
-                <li>
-                    Resourses 2 :  {" "} <br />
-                    <Link href={'https://www.youtube.com/watch?v=co3ZJ0ktI7c'} target='_blank'>Zustand 1</Link> <br />
-                    <Link href={'https://www.youtube.com/watch?v=AYO4qHAnLQI'} target='_blank'>Zustand 2</Link>
-                </li>
+            <div className='flex justify-between'>
+                <Typography variant="h5" >
+                    My Tasks
+                </Typography>
+
+                <div>
+                    <TaskForm handleDataSubmit={mutateAsync} />
+                </div>
             </div>
+            {/* <div>
+                <div className='block sm:hidden'>
+                    {taskData?.results.map((task: tastDataType) => (
+                        <div key={task._id}>
+                            <TaskCard createdAt={task?.createdAt} priority={task?.priority} task_name={task?.task_name} status={task?.status}></TaskCard>
+                        </div>
+                    ))}
+                </div>
+                <div className='hidden sm:block'>
+                    <CustomTable columns={TableColumn} isLoading={isLoading} data={taskData?.results || []} />
+                </div>
+            </div> */}
+
             <CustomTable columns={TableColumn} isLoading={isLoading} data={taskData?.results || []} />
+
         </div>
     )
 }

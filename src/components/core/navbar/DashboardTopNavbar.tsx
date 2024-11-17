@@ -80,6 +80,9 @@ const DashboardTopNavbar = () => {
                     </div>
                 </div>
             </div>
+            <div>
+                <SideNav></SideNav>
+            </div>
 
         </div>
     );

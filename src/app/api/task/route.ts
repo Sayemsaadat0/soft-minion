@@ -11,11 +11,11 @@ export async function GET(request: Request) {
 
     if (_id) {
       // Fetch a single task by _id
-      const task = await Task.findById(_id);
+      const result = await Task.findById(_id);
 
-      if (task) {
+      if (result) {
         return NextResponse.json(
-          { success: true, message: "Single Data Received", task },
+          { success: true, message: "Single Data Received", result },
           { status: 200 }
         );
       } else {
@@ -26,10 +26,10 @@ export async function GET(request: Request) {
       }
     } else {
       // Fetch all tasks
-      const tasks = await Task.find();
+      const results = await Task.find();
 
       return NextResponse.json(
-        { success: true, message: "All Data Received", tasks },
+        { success: true, message: "All Data Received", results },
         { status: 200 }
       );
     }

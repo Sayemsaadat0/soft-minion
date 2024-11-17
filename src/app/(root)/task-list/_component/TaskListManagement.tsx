@@ -6,6 +6,7 @@ import { Typography } from '@mui/material';
 import Link from 'next/link';
 import React, { FC } from 'react'
 import TaskForm from './TaskForm';
+import { useCreateTask, useGetTaskData } from '@/hooks/task.hook';
 
 
 
@@ -91,9 +92,15 @@ const TaskListManagement = () => {
             </div>
         </div>
     );
+
+
+
+    const { data: taskData } = useGetTaskData()
+    console.log(taskData)
+    const {mutateAsync} = useCreateTask()
     return (
         <div className='space-y-5'>
-            <TaskForm handleDataSubmit={() => undefined} />
+            <TaskForm handleDataSubmit={mutateAsync} />
             <Typography variant="h5" >
                 My Tasks
             </Typography>

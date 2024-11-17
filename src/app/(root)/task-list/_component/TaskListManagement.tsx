@@ -1,12 +1,12 @@
-"use client"
+"use client";
 import CustomTable, { CustomTableColumn } from '@/components/core/table/CustomTable';
-import { taskFakeData } from '@/data/dummy.data';
 import { tastDataType } from '@/model/task.type';
 import { Typography } from '@mui/material';
 import Link from 'next/link';
-import React, { FC } from 'react'
+import { FC } from 'react';
 import TaskForm from './TaskForm';
 import { useCreateTask, useGetTaskData } from '@/hooks/task.hook';
+import { formatDatetamp, formatTimeStamp } from '@/libs/formatTimeStams';
 
 
 
@@ -62,12 +62,10 @@ const TaskListManagement = () => {
         {
             title: 'Created ',
             dataKey: 'created_at',
-            row: () => (
-                <div>
-                    <p className="line-clamp-2 text-black">
-                        10-10-10
-                        {/* {data?.created_at.toLocaleString()} */}
-                    </p>
+            row: (data: tastDataType) => (
+                <div className='text-black tet-sm flex gap-2'>
+                    <p>{formatDatetamp(data?.createdAt || data?.createdAt)}</p>
+                    <p> {formatTimeStamp(data?.createdAt || data?.createdAt)}</p>
                 </div>
             ),
         },
@@ -95,9 +93,9 @@ const TaskListManagement = () => {
 
 
 
-    const { data: taskData } = useGetTaskData()
+    const { data: taskData, isLoading } = useGetTaskData()
     console.log(taskData)
-    const {mutateAsync} = useCreateTask()
+    const { mutateAsync } = useCreateTask()
     return (
         <div className='space-y-5'>
             <TaskForm handleDataSubmit={mutateAsync} />
@@ -126,7 +124,7 @@ const TaskListManagement = () => {
                     <Link href={'https://www.youtube.com/watch?v=AYO4qHAnLQI'} target='_blank'>Zustand 2</Link>
                 </li>
             </div>
-            <CustomTable columns={TableColumn} isLoading={false} data={taskFakeData || []} />
+            <CustomTable columns={TableColumn} isLoading={isLoading} data={taskData?.results || []} />
         </div>
     )
 }

@@ -9,6 +9,11 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const _id = searchParams.get("_id");
 
+    const sort = searchParams.get("sort") || "desc";  // Default to "asc" if no sort parameter is provided
+
+    // Determine the sort direction (1 for asc, -1 for desc)
+    const sortDirection = sort === "desc" ? -1 : 1;
+
     if (_id) {
       // Fetch a single task by _id
       const result = await Task.findById(_id);
@@ -26,7 +31,7 @@ export async function GET(request: Request) {
       }
     } else {
       // Fetch all tasks
-      const results = await Task.find();
+      const results = await Task.find().sort({ createdAt: sortDirection });
 
       return NextResponse.json(
         { success: true, message: "All Data Received", results },

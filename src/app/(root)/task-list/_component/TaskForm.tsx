@@ -1,3 +1,4 @@
+'use client'
 import { tastDataType } from '@/model/task.type';
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -30,9 +31,22 @@ type TaskFormType = {
     handleDataSubmit: Function;
 };
 
+
+
 const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     const {
         register,
+        reset,
         handleSubmit,
         formState: { errors, isSubmitting },
     } = useForm<tastDataType>({
@@ -53,9 +67,13 @@ const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
             form_data.append('created_at', data.created_at ? data.created_at.toISOString() : '');
             if (instance) {
                 await handleDataSubmit(form_data);
+                reset()
+                setOpen(false)
                 console.log('Edited Data Successfull')
             } else {
                 await handleDataSubmit(data)
+                reset()
+                setOpen(false)
                 console.log('Data Successfully Addedd')
             }
         } catch (err: any) {
@@ -63,15 +81,6 @@ const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
         }
     };
 
-    const [open, setOpen] = React.useState(false);
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     return (
         <React.Fragment>

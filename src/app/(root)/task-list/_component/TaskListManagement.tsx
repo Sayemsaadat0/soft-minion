@@ -3,7 +3,7 @@ import CustomTable, { CustomTableColumn } from '@/components/core/table/CustomTa
 import { tastDataType } from '@/model/task.type';
 import { Typography } from '@mui/material';
 import Link from 'next/link';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import TaskForm from './TaskForm';
 import { useCreateTask, useDeleteTask, useGetTaskData, useUpdateTask } from '@/hooks/task.hook';
 import { formatDatetamp, formatTimeStamp } from '@/libs/formatTimeStams';
@@ -95,8 +95,14 @@ const TaskListManagement = () => {
 
 
 
+    const [status, setStatus] = useState<string>('');
+    const [priority, setPriority] = useState<string>('');
 
-    const { data: taskData, isLoading } = useGetTaskData()
+    const { data: taskData, isLoading } = useGetTaskData({
+        status,  // Pass status filter
+        priority,  // Pass priority filter
+        ordering: "-createdAt",  // Default sorting by createdAt in descending order
+    });
     console.log(taskData)
     const { mutateAsync } = useCreateTask()
     return (
@@ -105,9 +111,37 @@ const TaskListManagement = () => {
                 <Typography variant="h5" >
                     My Tasks
                 </Typography>
-
                 <div>
                     <TaskForm handleDataSubmit={mutateAsync} />
+                </div>
+            </div>
+
+            <div className='flex gap-4'>
+                <div>
+                    <select
+                        id="status"
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value)}
+                        className='input_box_style'
+                    >
+                        <option value="">Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+
+                <div>
+                    <select
+                        id="priority"
+                        value={priority}
+                        onChange={(e) => setPriority(e.target.value)}
+                        className='input_box_style'
+                    >
+                        <option value="">Priority</option>
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                    </select>
                 </div>
             </div>
             {/* <div>
@@ -122,6 +156,8 @@ const TaskListManagement = () => {
                     <CustomTable columns={TableColumn} isLoading={isLoading} data={taskData?.results || []} />
                 </div>
             </div> */}
+
+
 
             <CustomTable columns={TableColumn} isLoading={isLoading} data={taskData?.results || []} />
 

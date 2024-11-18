@@ -1,6 +1,6 @@
-import { taskResponseType } from "@/hooks/task.hook";
+import { TaskResponseType } from "@/hooks/task.hook";
 
-export interface tastDataType extends taskResponseType {
+export interface tastDataType extends TaskResponseType {
     _id?: string | number
     task_name: string;
     priority: 'high' | 'medium' | 'low'

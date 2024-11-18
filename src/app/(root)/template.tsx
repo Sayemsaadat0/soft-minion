@@ -9,8 +9,10 @@ const template = ({ children }: { children: React.ReactNode }) => {
         <>
             <div className="flex">
                 <NextTopLoader color="#6ebbb7" showSpinner={false} />
-                <div className="fixed left-0 hidden bg-secondary_color lg:block  max-h-screen min-h-screen  overflow-auto w-[280px] border overflow-y-auto z-20">
-                    <DashboardAside />
+                <div >
+                    <div className="fixed left-0 overflow-hidden  hidden bg-secondary_color lg:block  max-h-screen min-h-screen   w-[280px] border overflow-y-auto z-20">
+                        <DashboardAside />
+                    </div>
                 </div>
                 <div className="sticky top-0 z-50  w-full lg:ml-[280px]">
                     <div className="border-b ">

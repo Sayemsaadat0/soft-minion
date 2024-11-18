@@ -15,7 +15,7 @@
   width: 100vw;
   height: 100vh;
   opacity: calc(10px);
-  z-index: 1040;
+  z-index: 1040; 
 }
 
 .sidenav:hover::before {

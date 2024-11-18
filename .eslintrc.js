@@ -8,7 +8,7 @@ const eslintConfig = {
   extends: [
     'plugin:react/recommended',
     'next/core-web-vitals',
-    'prettier',
+    'prettier', // This line is correct
     'plugin:@tanstack/eslint-plugin-query/recommended',
   ],
   parser: '@typescript-eslint/parser',

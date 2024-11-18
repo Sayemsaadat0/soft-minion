@@ -80,8 +80,8 @@ const DashboardTopNavbar = () => {
                     </div>
                 </div>
             </div>
-            <div>
-                <SideNav></SideNav>
+            <div className="block lg:hidden">
+                <SideNav />
             </div>
 
         </div>

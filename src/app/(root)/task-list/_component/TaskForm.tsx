@@ -5,15 +5,24 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-
 import { Button, Typography } from '@mui/material';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import { MuiModalTransition } from '@/components/core/MuiModalTransition';
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Swal from 'sweetalert2'
 
 
 
+const schema = z.object({
+    task_name: z.string().min(1, { message: 'Task name is required.' }),
+    priority: z.enum(['high', 'medium', 'low'], { required_error: 'Priority is required.' }),
+    status: z.enum(['pending', 'completed'], { required_error: 'Status is required.' }),
+    created_at: z.date({ required_error: 'Creation date is required.' }),
+});
 
 
+type FormData = z.infer<typeof schema>;
 
 // 
 type TaskFormType = {
@@ -38,7 +47,8 @@ const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
         reset,
         handleSubmit,
         formState: { errors, isSubmitting },
-    } = useForm<tastDataType>({
+    } = useForm<FormData>({
+        resolver: zodResolver(schema),
         defaultValues: {
             task_name: instance?.task_name || '',
             priority: instance?.priority || 'low',
@@ -48,30 +58,41 @@ const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
     });
     const onSubmit: SubmitHandler<tastDataType> = async (data) => {
         try {
-          const formData = {
-            task_name: data.task_name,
-            priority: data.priority,
-            status: data.status,
-            created_at: data.created_at ? data.created_at.toISOString() : ''
-          };
-      
-          if (instance) {
-            console.log('Editing Task');
-            await handleDataSubmit(formData); // Pass JSON instead of FormData
-            reset();
-            setOpen(false);
-            console.log('Task updated successfully');
-          } else {
-            await handleDataSubmit(formData); // New task submission
-            reset();
-            setOpen(false);
-            console.log('Task created successfully');
-          }
+            const formData = {
+                task_name: data.task_name,
+                priority: data.priority,
+                status: data.status,
+                created_at: data.created_at ? data.created_at.toISOString() : ''
+            };
+
+            if (instance) {
+                console.log('Editing Task');
+                await handleDataSubmit(formData); // Pass JSON instead of FormData
+                reset();
+                setOpen(false);
+                Swal.fire({
+                    icon: "success",
+                    title: "Task Edited..",
+                });
+            } else {
+                await handleDataSubmit(formData); // New task submission
+                reset();
+                setOpen(false);
+                Swal.fire({
+                    icon: "success",
+                    title: "Task Created Successfully!",
+                });
+            }
         } catch (err: any) {
-          console.log(err);
+            console.log(err);
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!",
+            });
         }
-      };
-      
+    };
+
 
 
     return (
@@ -99,8 +120,10 @@ const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
                                 {...register("task_name", { required: true })}
                                 aria-invalid={errors.task_name ? "true" : "false"}
                             />
-                            {errors.task_name?.type === "required" && (
-                                <p role="alert" className='text-error_1 py-1'>First name is required</p>
+                            {errors.task_name && (
+                                <p role="alert" className="text-error_1 py-1">
+                                    {errors.task_name.message}
+                                </p>
                             )}
                         </div>
                         <div className='space-y-1'>
@@ -110,8 +133,10 @@ const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
                                 <option value="medium">Medium</option>
                                 <option value="low">Low</option>
                             </select>
-                            {errors.priority?.type === "required" && (
-                                <p role="alert">First name is required</p>
+                            {errors.priority && (
+                                <p role="alert" className="text-error_1 py-1">
+                                    {errors.priority.message}
+                                </p>
                             )}
                         </div>
                         <div className='space-y-1'>
@@ -120,9 +145,12 @@ const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
                                 <option value="pending">Pending</option>
                                 <option value="completed">Completed</option>
                             </select>
-                            {errors.status?.type === "required" && (
-                                <p role="alert">First name is required</p>
+                            {errors.status && (
+                                <p role="alert" className="text-error_1 py-1">
+                                    {errors.status.message}
+                                </p>
                             )}
+
                         </div>
                         <div className="flex justify-end">
                             <Button type='submit' disabled={isSubmitting} color="success" variant="contained">

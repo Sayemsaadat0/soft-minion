@@ -3,7 +3,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import { MuiModalTransition } from '../MuiModalTransition'
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'; import { Button } from '@mui/material';
-;
+import Swal from 'sweetalert2'
+
 
 
 type DeleteActionProps = {
@@ -32,9 +33,21 @@ const DeleteAction: React.FC<DeleteActionProps> = ({
     const handleDelete = useCallback(async () => {
         try {
             await handleDeleteSubmit()
-            // setOpen(false);
+            setOpen(false);
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Deleted Successfully",
+                showConfirmButton: false,
+                timer: 1500
+            });
         } catch (error) {
             console.log(error)
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!",
+            });
         }
     }, [handleDeleteSubmit])
 
@@ -61,7 +74,7 @@ const DeleteAction: React.FC<DeleteActionProps> = ({
                     </div>
                     <div className='flex items-center justify-center gap-5'>
                         <Button onClick={() => setOpen(false)} color="error" variant="contained">Cancel</Button>
-                        <Button onClick={handleDelete} variant="outlined" color="error" startIcon={<DeleteOutlineOutlinedIcon />}>
+                        <Button disabled={isLoading} onClick={handleDelete} variant="outlined" color="error" startIcon={<DeleteOutlineOutlinedIcon />}>
                             {
                                 isLoading ? 'Deleting..' : 'Delete'
                             }

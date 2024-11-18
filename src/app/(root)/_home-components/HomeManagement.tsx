@@ -141,10 +141,10 @@ const HomeManagement = () => {
             {
                 !isLoading && taskData && <div className='flex flex-col md:flex-row gap-10 md:items-center'>
 
-                    <div className='md:w-1/3 border'>
+                    <div className='md:w-1/3'>
                         <PieCharts pendingTasksCount={pendingTasksCount} completedTasksCount={completedTasksCount} />
                     </div>
-                    <div className='md:w-2/3 border'>
+                    <div className='md:w-2/3'>
                         <PriorityRatio taskData={taskData?.results} />
                     </div>
                 </div>

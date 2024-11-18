@@ -28,6 +28,11 @@ const DashboardAside: FC = () => {
             label: "Task List",
             icon: <ListAltIcon />,
         },
+        {
+            path: "/task-list-1",
+            label: "Task List 1",
+            icon: <ListAltIcon />,
+        },
     ];
 
     return (

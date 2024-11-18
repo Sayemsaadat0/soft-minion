@@ -41,7 +41,6 @@ const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
     const handleClose = () => {
         setOpen(false);
     };
-    console.log(instance)
     const {
         register,
         reset,
@@ -66,8 +65,7 @@ const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
             };
 
             if (instance) {
-                console.log('Editing Task');
-                await handleDataSubmit(formData); // Pass JSON instead of FormData
+                await handleDataSubmit(formData); 
                 reset();
                 setOpen(false);
                 Swal.fire({
@@ -75,7 +73,7 @@ const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
                     title: "Task Edited..",
                 });
             } else {
-                await handleDataSubmit(formData); // New task submission
+                await handleDataSubmit(formData); 
                 reset();
                 setOpen(false);
                 Swal.fire({
@@ -112,7 +110,6 @@ const TaskForm: React.FC<TaskFormType> = ({ instance, handleDataSubmit }) => {
             >
                 <DialogTitle>{"Creat New Task"}</DialogTitle>
                 <DialogContent className='min-w-40'>
-                    {/* onSubmit={handleSubmit((d) => { onSubmit(d); console.log(d) })} */}
                     <form onSubmit={handleSubmit((d) => { onSubmit(d); console.log(d) })} className="w-full space-y-3">
                         <div className='space-y-1'>
                             <Typography variant='subtitle1'>Task Name</Typography>

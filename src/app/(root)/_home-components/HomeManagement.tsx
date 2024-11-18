@@ -5,11 +5,9 @@ import React, { FC } from 'react';
 import { ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, } from 'recharts';
 
 
-// bar chart for showing the priority
 
-
+// Bar Chart
 const PriorityRatio = ({ taskData }: { taskData: any }) => {
-    // Group tasks by date and priority
     const groupedData = taskData.reduce((acc: any, task: any) => {
         const date = formatDatetamp(task.createdAt)
 
@@ -17,16 +15,12 @@ const PriorityRatio = ({ taskData }: { taskData: any }) => {
         if (!acc[date]) {
             acc[date] = { high: 0, medium: 0, low: 0 };
         }
-
-        // Increment the count for the appropriate priority
         if (task.priority === 'high') acc[date].high++;
         if (task.priority === 'medium') acc[date].medium++;
         if (task.priority === 'low') acc[date].low++;
-
         return acc;
     }, {});
 
-    // Convert the grouped data to the format required by the chart
     const chartData = Object.keys(groupedData).map((date) => ({
         name: date,
         high: groupedData[date].high,
@@ -38,7 +32,7 @@ const PriorityRatio = ({ taskData }: { taskData: any }) => {
         <div className="overflow-x-auto
         
         ">
-            <ResponsiveContainer  width="100%" height={400}>
+            <ResponsiveContainer width="100%" height={400}>
                 <BarChart
                     data={chartData}
                     margin={{
@@ -89,7 +83,6 @@ const PieCharts: FC<piechartDataType> = ({ pendingTasksCount, completedTasksCoun
             </text>
         );
     };
-    // lg:w-1/2
     return (
         <div className="border bg-secondary_color  shadow-lg ">
             <div className="w-full ">
@@ -112,7 +105,6 @@ const PieCharts: FC<piechartDataType> = ({ pendingTasksCount, completedTasksCoun
                     </PieChart>
                 </ResponsiveContainer>
             </div>
-            {/* Legend Section */}
             <div className="flex flex-row justify-center gap-5 py-5">
                 {data.map((entry, index) => (
                     <div key={index} className="flex items-center flex-col gap-5">
@@ -128,6 +120,9 @@ const PieCharts: FC<piechartDataType> = ({ pendingTasksCount, completedTasksCoun
     );
 };
 
+
+
+
 // Default Component
 const HomeManagement = () => {
 
@@ -135,16 +130,19 @@ const HomeManagement = () => {
 
     const pendingTasksCount = taskData?.results.filter((status: any) => status.status === 'pending').length || 0;
     const completedTasksCount = taskData?.results.filter((status: any) => status.status === 'completed').length || 0;
+
+
+
     return (
         <div>
 
             {
-                !isLoading && taskData && <div className='flex flex-col md:flex-row gap-10 md:items-center'>
+                !isLoading && taskData && <div className='flex flex-col xl:flex-row gap-10 xl:items-center'>
 
-                    <div className='md:w-1/3'>
+                    <div className='xl:w-1/3'>
                         <PieCharts pendingTasksCount={pendingTasksCount} completedTasksCount={completedTasksCount} />
                     </div>
-                    <div className='md:w-2/3'>
+                    <div className='xl:w-2/3'>
                         <PriorityRatio taskData={taskData?.results} />
                     </div>
                 </div>

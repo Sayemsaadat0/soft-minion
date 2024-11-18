@@ -3,14 +3,11 @@ import CustomTable, { CustomTableColumn } from '@/components/core/table/CustomTa
 import { tastDataType } from '@/model/task.type';
 import { Typography } from '@mui/material';
 import { FC, useState } from 'react';
-import TaskForm from './TaskForm';
-import { useCreateTask, useDeleteTask, useGetTaskData, useUpdateTask } from '@/hooks/task.hook';
+import { useCreateTask, useDeleteTask, useUpdateTask } from '@/hooks/task.hook';
 import { formatDatetamp, formatTimeStamp } from '@/libs/formatTimeStams';
 import DeleteAction from '@/components/core/action/DeleteAction';
 import { useGetTasks } from '@/hooks/zustand-task.hook';
-// import { useGetTasks } from '@/hooks/zustand-task.hook';
-// import { useGetTasks } from '@/hooks/getTaskData.hook';
-
+import TaskForm from '../../task-list/_component/TaskForm';
 
 type tableActionType = {
     data: tastDataType;
@@ -26,7 +23,7 @@ export const CandidateAction: FC<tableActionType> = ({ data }) => {
 
 
 
-const TaskListManagement = () => {
+const TaskList1Management = () => {
 
     // table
     const TableColumn: CustomTableColumn[] = [
@@ -99,21 +96,19 @@ const TaskListManagement = () => {
     const [status, setStatus] = useState<string>('');
     const [priority, setPriority] = useState<string>('');
 
-    const { data: taskData, isLoading } = useGetTaskData({
-        status,
-        priority,
-        ordering: "-createdAt",
-    });
     const { mutateAsync } = useCreateTask()
 
 
+    const { tasks, loading } = useGetTasks({ status, priority, ordering: "-createdAt", });
 
     return (
         <div className='space-y-5'>
             <div className='flex justify-between'>
-                <Typography variant="h5" >
-                    My Tasks
-                </Typography>
+                <div>
+                    <Typography variant="h5" >
+                        My Tasks
+                    </Typography>
+                </div>
                 <div>
                     <TaskForm handleDataSubmit={mutateAsync} />
                 </div>
@@ -149,10 +144,12 @@ const TaskListManagement = () => {
             </div>
             {/* table */}
             {/* <CustomTable columns={TableColumn} isLoading={isLoading} data={taskData?.results || []} /> */}
-            <CustomTable columns={TableColumn} isLoading={isLoading} data={taskData?.results || []} />
-
+            <CustomTable columns={TableColumn} isLoading={loading} data={tasks?.results || []} />
+            <Typography color='red' variant="subtitle1" >
+                Note: This container uses Zustand to fetch and filter task data. However, I'm facing an issue with updating the table, which is why I created a separate route. The problem is with revalidating and refreshing the table using Zustand custom hook.
+            </Typography>
         </div>
     )
 }
 
-export default TaskListManagement;
+export default TaskList1Management;

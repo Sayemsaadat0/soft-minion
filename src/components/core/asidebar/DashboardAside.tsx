@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import GridViewIcon from '@mui/icons-material/GridView';
 import { Typography } from '@mui/material';
 import ListAltIcon from '@mui/icons-material/ListAlt';
+import GraphqlIcon from '../icons/GraphqlIcon';
 
 
 interface MenuItem {
@@ -32,6 +33,16 @@ const DashboardAside: FC = () => {
             path: "/task-list-1",
             label: "Task List 1",
             icon: <ListAltIcon />,
+        },
+        {
+            path: "/graphql-test",
+            label: "Graphql",
+            icon: <GraphqlIcon />,
+        },
+        {
+            path: "/lenis",
+            label: "Lenis",
+            icon: <GraphqlIcon />,
         },
     ];
 

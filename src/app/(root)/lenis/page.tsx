@@ -44,7 +44,7 @@ const Page = () => {
                 </p>
             </div>
 
-            {/* Section 4 - The Third Section (Covering the Footer) */}
+            {/* Section 4 - ffjhfjg The Third Section (Covering the Footer) */}
             <div className="bg-blue-600 h-[100vh] relative w-full z-[50] flex items-center justify-center">
                 <p className="text-white text-xl">the footer</p>
             </div>
